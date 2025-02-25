@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "goph420-w2025-lab01-stZM"
+version = "0.0.1"
+authors = [
+{ name="Zoe Mitchell", email="zoe.mitchell@ucalgary.ca" },
+]
+description="An example Python package"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+"numpy",
+"matplotlib",
+]
+classifiers = [
+"Programming Language :: Python :: 3",
+"Operating System :: OS Independent",
+"License :: OSI Approved :: GNU General Public License v3",
+]
+[project.urls]
+"Homepage" = "https://github.com/zmitchell04/goph420-w2025-lab01-stZM"
