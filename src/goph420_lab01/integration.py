@@ -44,7 +44,7 @@ def integrate_newton(x,f,alg):
             I += 0.5 * (f[i] + f[i+1]) * (x[i+1] - x[i])
         return I
 
-    #implementation of Simpson's Rule
+    # implementation of Simpson's Rule
 
     elif alg_clean == "simp":
         # implement Simpson's 1/3 rule for pairs of intervals

@@ -1,58 +1,57 @@
-
+import unittest
 import numpy as np
 from src.goph420_lab01.integration import integrate_newton
 
+class TestIntegrateNewtonCotes(unittest.TestCase):
 
-def test_trap_():
-    """Test Trapezoid rule on linear data with an even number of data points."""
+    def test_trapezoid_linear(self):
+        # Test for a linear function with Trapezoidal Rule
+        x = np.array([0, 1])
+        f = np.array([0, 1])  # Linear function f(x) = x
+        result = integrate_newton(x, f, 'trap')
+        self.assertAlmostEqual(result, 0.5, places=5)  # Integral of x from 0 to 1 is 0.5
 
-    # Define a linear function f(x) = 2x + 1
-    a, b = 2, 1  # y = 2x + 1
-    x = np.linspace(0, 1, 6)  # Generate 6 points evenly spaced between 0 and 1
-    f = a * x + b  # f(x) = 2x + 1
+    def test_trapezoid_linear_even_points(self):
+        # Test for linear function with an even number of data points
+        x = np.linspace(0, 1, 4)  # Even number of points (4)
+        f = x  # Linear function f(x) = x
+        result = integrate_newton(x, f, 'trap')
+        self.assertAlmostEqual(result, 0.5, places=5)
 
-    # Expected integral for f(x) = 2x + 1 from 0 to 1 is (x^2 + x) evaluated from 0 to 1
-    expected_result = (1 ** 2 + 1) - (0 ** 2 + 0)  # Exact result = 2
+    def test_simpson_quadratic(self):
+        # Test for quadratic function with Simpson's Rule
+        x = np.array([0, 0.5, 1])
+        f = np.array([0, 0.25, 1])  # Quadratic function f(x) = x^2
+        result = integrate_newton(x, f, 'simp')
+        self.assertAlmostEqual(result, 1/3, places=5)  # Integral of x^2 from 0 to 1 is 1/3
 
-    # Perform the integration using Trapezoid rule
-    result = integrate_newton(x, f, "trap")
+    def test_simpson_quadratic_odd_points(self):
+        # Test for quadratic function with an odd number of data points
+        x = np.linspace(0, 1, 5)  # Odd number of points (5)
+        f = x**2  # Quadratic function f(x) = x^2
+        result = integrate_newton(x, f, 'simp')
+        self.assertAlmostEqual(result, 1/3, places=5)
 
-    # Check if the result is very close to the exact result
-    print("Testing trapezoid rule...")
-    print(f"the expected result is {expected_result}")
-    print(f"The calculated result is {result}")
+    def test_invalid_alg(self):
+        # Test for invalid algorithm string
+        x = np.array([0, 1])
+        f = np.array([0, 1])
+        with self.assertRaises(ValueError):
+            integrate_newton(x, f, 'invalid')
 
-    if expected_result == result:
-        print("TEST PASSED")
+    def test_incompatible_shapes(self):
+        # Test for incompatible x and f arrays
+        x = np.array([0, 1])
+        f = np.array([0])
+        with self.assertRaises(ValueError):
+            integrate_newton(x, f, 'trap')
 
-    else:
-        print("TEST FAILED")
+    def test_sorting_of_data(self):
+        # Test for sorting functionality
+        x = np.array([1, 0])
+        f = np.array([1, 0])
+        result = integrate_newton(x, f, 'trap')
+        self.assertAlmostEqual(result, 0.5, places=5)
 
-def test_simp():
-    """Test Simpson's rule on quadratic data with an even number of data points."""
-    # Define a quadratic function f(x) = x^2 + 2x + 1
-    a, b, c = 1, 2, 1  # y = x^2 + 2x + 1
-    x = np.linspace(0, 2, 6)  # Generate 6 points evenly spaced between 0 and 2
-    f = a * x ** 2 + b * x + c  # f(x) = x^2 + 2x + 1
-
-    # Exact integral for f(x) = x^2 + 2x + 1 from 0 to 2 is (x^3/3 + x^2 + x) evaluated from 0 to 2
-    expected_result = (2 ** 3 / 3 + 2 ** 2 + 2) - (0 ** 3 / 3 + 0 ** 2 + 0)  # Exact result = 14/3 ≈ 4.6667
-
-    # Perform the integration using Simpson's rule
-    result = integrate_newton(x, f, "simp")
-
-    # Check if the result is very close to the exact result
-    print("Testing Simpson's 1/3 rule...")
-    print(f"the expected result is {expected_result}")
-    print(f"The calculated result is {result}")
-
-    if expected_result == result:
-        print("TEST PASSED")
-
-    else:
-        print("TEST FAILED")
-
-
-if __name__ == '__main__':
-    test_trap_()
-    test_simp()
+if __name__ == "__main__":
+    unittest.main()
